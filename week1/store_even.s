@@ -1,0 +1,51 @@
+/*
+
+A: .WORD 15,10,12,13,9,45,16,8,25,33
+EVENSUM: .WORD 0,0,0,0,0,0,0,0,0,0
+
+.TEXT 
+    LDR R0,=A
+    LDR R1,=EVENSUM
+    MOV R6,#10
+    MOV R5,#0
+
+L3:LDR R3,[R0]
+    ANDS R4,R3,#1;ANDS UPDATES THE FLAGS
+    BEQ L1
+    B L2
+
+L1: ADD R5,R5,R3
+
+L2: ADD R0,R0,#4
+    SUBS R6,R6,#1
+    BNE L3
+    STR R5,[R1]
+
+SWI 0x011
+    
+
+*/
+
+;store even only to the memory
+
+LDR R0,=A
+MOV R1,#10
+
+L1:LDR R2,[R0],#4
+   AND R4,R2,#1
+   SUB R1,R1,#1
+   CMP R1,#0
+   BEQ L3
+   CMP R4,#1
+   BEQ L2
+
+L2:ADD R7,R7,R2
+    B L1
+
+L3: SWI 0X11
+
+SWI 0X11
+
+
+
+A: .WORD 15,10,12,13,9,45,16,8,25,33
